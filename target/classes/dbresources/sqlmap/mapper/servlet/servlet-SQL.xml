@@ -3,13 +3,60 @@
 <mapper namespace="servlet">
 
 	<select id="serVletTest" resultType="EgovMap">
-		<![CDATA[
-			SELECT 
-				FILENAME, FILEREALNAME
-			FROM
-				UPLOAD
-			WHERE
-				1=1
-		]]>
+      <![CDATA[
+         SELECT FILENAME, FILEREALNAME
+         FROM UPLOAD
+         WHERE 1=1
+      ]]>
 	</select>
+
+	<select id="sidonm" resultType="Map">
+		SELECT DISTINCT sd_nm, sd_cd FROM
+		public."tl_sd";
+	</select>
+
+	<select id="sggnm" resultType="map" parameterType="String">
+		SELECT sgg_nm, sgg_cd
+		FROM tl_sgg WHERE sgg_nm LIKE CONCAT(#{sido}, '%')
+	</select>
+
+	<select id="bjdnm" resultType="Map" parameterType="String">
+		SELECT id, bjd_cd, bjd_nm, sgg_oid, sgg_cd, gid, ele, gas, heat 
+      	FROM tl_bjd
+      	WHERE bjd_cd LIKE CONCAT ((SELECT adm_sect_c FROM tl_sgg WHERE sgg_nm=#{sggnm}), '%')
+      	ORDER BY bjd_cd
+	</select>
+
+	<insert id="fileUp" parameterType="list">
+		<foreach collection="list" item="item" index="index" separator=";">
+			INSERT INTO TB_CARBON_E6 (yearMonthUse, landLocation, roadLandLocation, sggcd, sidonm, landCode, bun, landclassification, newAddNumber, newRoadCode,
+			newLandCode, usage)
+			VALUES (#{item.sggcd}, #{item.sidonm}, #{item.usage})
+		</foreach>
+	</insert>
+
+	<select id="selectSd" parameterType="String" resultType="Map">
+		select (select ST_XMax(geom) as xmax FROM tl_sgg WHERE sgg_nm = #{name}::varchar order by xmax desc limit 1)
+		,(select ST_YMax(geom) as ymax FROM tl_sgg WHERE sgg_nm = #{name}::varchar order by ymax desc limit 1)
+		,(select ST_XMin(geom) as xmin FROM tl_sgg WHERE sgg_nm = #{name}::varchar order by xmin limit 1)
+		,(select ST_YMin(geom) as ymin FROM tl_sgg WHERE sgg_nm = #{name}::varchar order by ymin limit 1)
+		from tl_sd limit 1
+	</select>
+
+	<select id="selectGeom" parameterType="String" resultType="Map">
+		select (select ST_XMax(geom) as xmax FROM tl_sd WHERE sd_nm = #{sido}::varchar order by xmax desc limit 1)
+		,(select ST_YMax(geom) as ymax FROM tl_sd WHERE sd_nm = #{sido}::varchar order by ymax desc limit 1)
+		,(select ST_XMin(geom) as xmin FROM tl_sd WHERE sd_nm = #{sido}::varchar order by xmin limit 1)
+		,(select ST_YMin(geom) as ymin FROM tl_sd WHERE sd_nm = #{sido}::varchar order by ymin limit 1)
+		from tl_sd limit 1
+	</select>
+
+	<select id="selectB" parameterType="String" resultType="Map">
+		select (select ST_XMax(geom) as xmax FROM tl_sgg WHERE sgg_nm = #{sgg}::varchar order by xmax desc limit 1)
+		,(select ST_YMax(geom) as ymax FROM tl_sgg WHERE sgg_nm = #{sgg}::varchar order by ymax desc limit 1)
+		,(select ST_XMin(geom) as xmin FROM tl_sgg WHERE sgg_nm = #{sgg}::varchar order by xmin limit 1)
+		,(select ST_YMin(geom) as ymin FROM tl_sgg WHERE sgg_nm = #{sgg}::varchar order by ymin limit 1)
+		from tl_sd limit 1
+	</select>
+
 </mapper>

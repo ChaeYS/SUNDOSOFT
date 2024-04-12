@@ -6,6 +6,11 @@
 		<typeAlias alias="hashMap" type="java.util.HashMap"/>
 		<typeAlias alias="map" type="java.util.Map"/>
 		<typeAlias alias="list" type="java.util.List"/>
+		<typeAlias alias="list1" type="java.util.List"/>
+		<typeAlias alias="list2" type="java.util.List"/>
 		<typeAlias alias="egovMap" type="egovframework.rte.psl.dataaccess.util.EgovMap"/>
+		<typeAlias alias="ServletVO" type="servlet.vo.ServletVO"/>
+		<typeAlias alias="selectSd" type="servlet.vo.SdDTO"/>
+		<typeAlias alias="selectSgg" type="servlet.vo.SggDTO"/>
 	</typeAliases>
 </configuration>

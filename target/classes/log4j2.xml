@@ -7,7 +7,6 @@
 	</properties>
 	
 	<Appenders>
-		
 		<Console name="console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d %5p [%c] %m%n" />
 		</Console>
@@ -21,12 +20,9 @@
 			</Policies>
 		</RollingFile>
 		-->
-		
 	</Appenders> 
 	
-	
 	<Loggers>
-		
 		<Logger name="egovframework" level="OFF" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
@@ -71,7 +67,6 @@
 		<Logger name="org.springframework" level="INFO" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		
 		
 		<!-- ===================================== -->
 		<!-- Possible Log Levels:                  -->
